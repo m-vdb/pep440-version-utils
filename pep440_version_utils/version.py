@@ -1,6 +1,11 @@
-from typing import Option, Tuple, Text
+from copy import copy
+from typing import Optional, Tuple, Text
 
-from packaging.version import Version as BaseVersion, _Version as VersionNamedTuple
+from packaging.version import (
+    Version as BaseVersion,
+    _Version as VersionNamedTuple,
+    _cmpkey,
+)
 
 
 ALPHA_SEGMENT = "a"

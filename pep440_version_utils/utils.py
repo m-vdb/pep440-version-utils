@@ -1,3 +1,5 @@
+from typing import Text
+
 from packaging.version import InvalidVersion
 
 from .version import Version
