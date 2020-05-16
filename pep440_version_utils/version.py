@@ -29,7 +29,7 @@ class Version(BaseVersion):
         _reset_sort_key(new_version)
         return new_version
 
-    def next_major(self) -> Version:
+    def next_major(self) -> "Version":
         """
         Return a new `Version` with the next major version.
         """
@@ -45,7 +45,7 @@ class Version(BaseVersion):
         _reset_sort_key(version)
         return version
 
-    def next_minor(self) -> Version:
+    def next_minor(self) -> "Version":
         """
         Return a new `Version` with the next minor version.
         """
@@ -61,7 +61,7 @@ class Version(BaseVersion):
         _reset_sort_key(version)
         return version
 
-    def next_micro(self) -> Version:
+    def next_micro(self) -> "Version":
         """
         Return a new `Version` with the next micro version.
         """
@@ -77,7 +77,7 @@ class Version(BaseVersion):
         _reset_sort_key(version)
         return version
 
-    def next_alpha(self, with_minor_bump=True, with_major_bump=False) -> Version:
+    def next_alpha(self, with_minor_bump=True, with_major_bump=False) -> "Version":
         """
         Return a new `Version` with the next alpha version.
         Alpha is a segment in a prerelease defined in PEP440.
@@ -99,7 +99,7 @@ class Version(BaseVersion):
         _reset_sort_key(version)
         return version
 
-    def next_beta(self, with_minor_bump=True, with_major_bump=False) -> Version:
+    def next_beta(self, with_minor_bump=True, with_major_bump=False) -> "Version":
         """
         Return a new `Version` with the next beta version.
         Beta is a segment in a prerelease defined in PEP440.
@@ -123,7 +123,7 @@ class Version(BaseVersion):
 
     def next_release_candidate(
         self, with_minor_bump=True, with_major_bump=False
-    ) -> Version:
+    ) -> "Version":
         """
         Return a new `Version` with the next release candidate version.
         Release candidate is a segment in a prerelease defined in PEP440.
