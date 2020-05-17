@@ -12,13 +12,17 @@ ALPHA_SEGMENT = "a"
 BETA_SEGMENT = "b"
 RC_SEGMENT = "rc"
 
+VERSION_MICRO = "micro"
+VERSION_MINOR = "minor"
+VERSION_MAJOR = "major"
+
 
 class Version(BaseVersion):
     """
     Supercede `packaging.version.Version` to provide utility methods.
     """
 
-    def __copy__(self):
+    def __copy__(self) -> "Version":
         """
         As `__init__()` only accepts a version string as opposed to
         version segments as parameters, we make it easy to copy
@@ -34,13 +38,16 @@ class Version(BaseVersion):
         Return a new `Version` with the next major version.
         """
         version = copy(self)
+        major = version.major + 1
+        if version.pre and not version.minor and not version.micro:
+            major = version.major
         version._version = VersionNamedTuple(
             epoch=version._version.epoch,
-            release=(version.major + 1, 0, 0),
-            pre=version.pre,
-            post=version.post,
-            dev=version.dev,
-            local=version.local,
+            release=(major, 0, 0),
+            pre=None,
+            post=None,
+            dev=None,
+            local=None,
         )
         _reset_sort_key(version)
         return version
@@ -50,13 +57,16 @@ class Version(BaseVersion):
         Return a new `Version` with the next minor version.
         """
         version = copy(self)
+        minor = version.minor + 1
+        if version.pre and not version.micro:
+            minor = version.minor
         version._version = VersionNamedTuple(
             epoch=version._version.epoch,
-            release=(version.major, version.minor + 1, 0),
-            pre=version.pre,
-            post=version.post,
-            dev=version.dev,
-            local=version.local,
+            release=(version.major, minor, 0),
+            pre=None,
+            post=None,
+            dev=None,
+            local=None,
         )
         _reset_sort_key(version)
         return version
@@ -66,84 +76,69 @@ class Version(BaseVersion):
         Return a new `Version` with the next micro version.
         """
         version = copy(self)
+        micro = version.micro + 1
+        if version.pre and version.micro > 0:
+            micro = version.micro
         version._version = VersionNamedTuple(
             epoch=version._version.epoch,
-            release=(version.major, version.minor, version.micro + 1),
-            pre=version.pre,
-            post=version.post,
-            dev=version.dev,
-            local=version.local,
+            release=(version.major, version.minor, micro),
+            pre=None,
+            post=None,
+            dev=None,
+            local=None,
         )
         _reset_sort_key(version)
         return version
 
-    def next_alpha(self, with_minor_bump=True, with_major_bump=False) -> "Version":
+    def next_alpha(self, version_bump=VERSION_MICRO) -> "Version":
         """
         Return a new `Version` with the next alpha version.
         Alpha is a segment in a prerelease defined in PEP440.
         """
-        version = copy(self)
-        if with_major_bump:
-            version = version.next_major()
-        elif with_minor_bump:
-            version = version.next_minor()
+        return _next_prerelease_version(self, version_bump, ALPHA_SEGMENT)
 
-        version._version = VersionNamedTuple(
-            epoch=version._version.epoch,
-            release=version.release,
-            pre=_increment_prerelease(version.pre, ALPHA_SEGMENT),
-            post=version.post,
-            dev=version.dev,
-            local=version.local,
-        )
-        _reset_sort_key(version)
-        return version
-
-    def next_beta(self, with_minor_bump=True, with_major_bump=False) -> "Version":
+    def next_beta(self, version_bump=VERSION_MICRO) -> "Version":
         """
         Return a new `Version` with the next beta version.
         Beta is a segment in a prerelease defined in PEP440.
         """
-        version = copy(self)
-        if with_major_bump:
-            version = version.next_major()
-        elif with_minor_bump:
-            version = version.next_minor()
+        return _next_prerelease_version(self, version_bump, BETA_SEGMENT)
 
-        version._version = VersionNamedTuple(
-            epoch=version._version.epoch,
-            release=version.release,
-            pre=_increment_prerelease(version.pre, BETA_SEGMENT),
-            post=version.post,
-            dev=version.dev,
-            local=version.local,
-        )
-        _reset_sort_key(version)
-        return version
-
-    def next_release_candidate(
-        self, with_minor_bump=True, with_major_bump=False
-    ) -> "Version":
+    def next_release_candidate(self, version_bump=VERSION_MICRO) -> "Version":
         """
         Return a new `Version` with the next release candidate version.
         Release candidate is a segment in a prerelease defined in PEP440.
         """
-        version = copy(self)
-        if with_major_bump:
-            version = version.next_major()
-        elif with_minor_bump:
-            version = version.next_minor()
+        return _next_prerelease_version(self, version_bump, RC_SEGMENT)
 
-        version._version = VersionNamedTuple(
-            epoch=version._version.epoch,
-            release=version.release,
-            pre=_increment_prerelease(version.pre, RC_SEGMENT),
-            post=version.post,
-            dev=version.dev,
-            local=version.local,
-        )
-        _reset_sort_key(version)
-        return version
+
+def _next_prerelease_version(
+    version: Version, version_bump: Text, segment: Text
+) -> Version:
+    """
+    Return a new `Version` with the next prerelease (one of alpha, beta, rc).
+    It can bump either the major, minor or micro part of the release, if this
+    is the first prerelease (prerelease is absent from the current version).
+    """
+    version = copy(version)
+    if not version.pre:
+        if version_bump == VERSION_MAJOR:
+            version = version.next_major()
+        elif version_bump == VERSION_MINOR:
+            version = version.next_minor()
+        elif version_bump == VERSION_MICRO:
+            version = version.next_micro()
+
+    version._version = VersionNamedTuple(
+        epoch=version._version.epoch,
+        release=version.release,
+        pre=_increment_prerelease(version.pre, segment),
+        post=None,
+        dev=None,
+        local=None,
+    )
+    _reset_sort_key(version)
+    return version
 
 
 def _increment_prerelease(
