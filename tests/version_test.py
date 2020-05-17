@@ -170,3 +170,15 @@ def test_next_rc(version_string, version_bump, expected):
     assert isinstance(next_version, Version)
     assert next_version > version
     assert str(next_version) == expected
+
+
+def test_next_prerelease_invalid():
+    version = Version("1.1.1")
+    with pytest.raises(TypeError):
+        version.next_alpha("stuff")
+
+    with pytest.raises(TypeError):
+        version.next_beta("stuff")
+
+    with pytest.raises(TypeError):
+        version.next_release_candidate("stuff")

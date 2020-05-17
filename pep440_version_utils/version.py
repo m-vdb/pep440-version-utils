@@ -128,6 +128,9 @@ def _next_prerelease_version(
             version = version.next_minor()
         elif version_bump == VERSION_MICRO:
             version = version.next_micro()
+        else:
+            # would use typing.Literal but only available in Python 3.8
+            raise TypeError(f"Unknown version bump: {version_bump}")
 
     version._version = VersionNamedTuple(
         epoch=version._version.epoch,
