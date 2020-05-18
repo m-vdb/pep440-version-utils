@@ -2,4 +2,86 @@
 [![Coverage Status](https://coveralls.io/repos/github/m-vdb/pep440-version-utils/badge.svg?branch=master)](https://coveralls.io/github/m-vdb/pep440-version-utils?branch=master)
 
 # pep440-version-utils
-Utilities to deal with pep440 versioning
+This package regroups utilities to deal with pep440 versioning. It is based on the
+[PyPA's `packaging`](https://github.com/pypa/packaging) project and extends it.
+
+It makes it easier to handle version bumps and strictly follows [PEP440 specification](https://www.python.org/dev/peps/pep-0440/).
+
+![Release cycle](/docs/release-cycle.png)
+
+## Installation
+
+Use `pip` or `poetry` to install this package:
+
+```bash
+$ pip install pep440-version-utils
+
+# or alternatively
+$ poetry add pep440-version-utils
+```
+
+## Usage
+
+Since this package extends the `packaging` library, so it supports version parsing and ordering as described
+in [this documentation](https://packaging.pypa.io/en/latest/version/).
+
+To bump to a new release version:
+
+```python
+from pep440_version_utils import Version
+
+version = Version("1.10.2")
+version.next_micro()  # 1.10.3
+version.next_minor()  # 1.11.0
+version.next_major()  # 2.0.0
+```
+
+To bump to a new prerelease version:
+
+```python
+from pep440_version_utils import Version
+
+version = Version("1.10.2")
+version.next_alpha()  # 1.10.3a1
+version.next_beta()  # 1.10.3b1
+version.next_release_candidate()  # 1.10.3rc1
+
+version.next_alpha("minor")  # 1.11.0a1
+version.next_beta("mior")  # 1.11.0b1
+version.next_release_candidate("major")  # 2.0.0rc1
+```
+
+And it implements the full release cycle:
+
+```python
+from pep440_version_utils import Version
+
+version = Version("1.10.2")
+alpha1 = version.next_alpha()  # 1.10.3a1
+alpha2 = alpha1.next_alpha()  # 1.10.3a2
+beta1 = alpha2.next_beta()  # 1.10.3b1
+rc1 = beta1.next_release_candidate()  # 1.10.3rc1
+rc2 = rc1.next_release_candidate()  # 1.10.3rc2
+new_version = rc2.next_micro()  # 1.10.3
+```
+
+## Limitations
+
+This package doesn't support _post_, _dev_ and _local_ versions yet. **Contributions are welcome 😊**
+
+## How to contribute
+
+This package is fairly simple, here is how you can contribute:
+
+1. ⚙️ Install [`poetry`](https://python-poetry.org/)
+2. 📦 In the repository folder, run `poetry install`
+3. ✍️ Implement the desired changes
+4. ✅ Run test, type checking and code quality checks:
+```bash
+$ poetry run black . --check
+$ poetry run mypy */**.py --ignore-missing-imports
+$ poetry run pytest --cov=pep440_version_utils
+```
+5. ➡️ Submit a new pull request
+
+Do not hesitate to contribue, even for very small changes!
