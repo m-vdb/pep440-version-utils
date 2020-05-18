@@ -7,7 +7,7 @@ This package regroups utilities to deal with pep440 versioning. It is based on t
 
 It makes it easier to handle version bumps and strictly follows [PEP440 specification](https://www.python.org/dev/peps/pep-0440/).
 
-![Release cycle](/docs/release-cycle.png)
+![Release cycle](https://github.com/m-vdb/pep440-version-utils/blob/master/docs/release-cycle.png?raw=true)
 
 ## Installation
 
