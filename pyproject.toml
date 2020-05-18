@@ -4,6 +4,11 @@ version = "0.1.0"
 description = "Utilities to deal with pep440 versioning"
 authors = ["Maxime Verger <me@maxvdb.com>"]
 license = "MIT License"
+maintainers = ["Maxime Verger <me@maxvdb.com>"]
+readme = "README.md"
+homepage = "https://github.com/m-vdb/pep440-version-utils"
+repository = "https://github.com/m-vdb/pep440-version-utils"
+keywords = ["pep440", "version"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
