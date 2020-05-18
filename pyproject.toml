@@ -9,6 +9,7 @@ readme = "README.md"
 homepage = "https://github.com/m-vdb/pep440-version-utils"
 repository = "https://github.com/m-vdb/pep440-version-utils"
 keywords = ["pep440", "version"]
+classifiers = ["Development Status :: 4 - Beta", "Intended Audience :: Developers", "License :: OSI Approved :: MIT License", "Programming Language :: Python", "Programming Language :: Python :: 3.7", "Programming Language :: Python :: 3.8"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
