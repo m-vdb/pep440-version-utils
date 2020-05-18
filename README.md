@@ -65,6 +65,15 @@ rc2 = rc1.next_release_candidate()  # 1.10.3rc2
 new_version = rc2.next_micro()  # 1.10.3
 ```
 
+You can also check if a version is a specific type of prerelease:
+```python
+from pep440_version_utils import Version
+
+Version("1.10.2a1").is_alpha  # True
+Version("1.10.2b2").is_beta  # True
+Version("1.10.2rc1").is_release_candidate  # True
+```
+
 ## Limitations
 
 This package doesn't support _post_, _dev_ and _local_ versions yet. **Contributions are welcome 😊**

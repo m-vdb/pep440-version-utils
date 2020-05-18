@@ -182,3 +182,51 @@ def test_next_prerelease_invalid():
 
     with pytest.raises(TypeError):
         version.next_release_candidate("stuff")
+
+
+test_versions_is_alpha = [
+    ("0.0.1", False),
+    ("1.2.1a1", True),
+    ("1.2.1b1", False),
+    ("1.2.1rc1", False),
+]
+
+
+@pytest.mark.parametrize(
+    "version_string,expected", test_versions_is_alpha,
+)
+def test_is_alpha(version_string, expected):
+    version = Version(version_string)
+    assert version.is_alpha is expected
+
+
+test_versions_is_beta = [
+    ("0.0.1", False),
+    ("1.2.1a1", False),
+    ("1.2.1b1", True),
+    ("1.2.1rc1", False),
+]
+
+
+@pytest.mark.parametrize(
+    "version_string,expected", test_versions_is_beta,
+)
+def test_is_beta(version_string, expected):
+    version = Version(version_string)
+    assert version.is_beta is expected
+
+
+test_versions_is_release_candidate = [
+    ("0.0.1", False),
+    ("1.2.1a1", False),
+    ("1.2.1b1", False),
+    ("1.2.1rc1", True),
+]
+
+
+@pytest.mark.parametrize(
+    "version_string,expected", test_versions_is_release_candidate,
+)
+def test_is_release_candidate(version_string, expected):
+    version = Version(version_string)
+    assert version.is_release_candidate is expected

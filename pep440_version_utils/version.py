@@ -111,6 +111,27 @@ class Version(BaseVersion):
         """
         return _next_prerelease_version(self, version_bump, RC_SEGMENT)
 
+    @property
+    def is_alpha(self) -> bool:
+        """
+        Return True if the `Version` is an alpha.
+        """
+        return self.pre is not None and self.pre[0] == ALPHA_SEGMENT
+
+    @property
+    def is_beta(self) -> bool:
+        """
+        Return True if the `Version` is a beta.
+        """
+        return self.pre is not None and self.pre[0] == BETA_SEGMENT
+
+    @property
+    def is_release_candidate(self) -> bool:
+        """
+        Return True if the `Version` is a release candidate.
+        """
+        return self.pre is not None and self.pre[0] == RC_SEGMENT
+
 
 def _next_prerelease_version(
     version: Version, version_bump: Text, segment: Text
