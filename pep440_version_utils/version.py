@@ -133,6 +133,13 @@ class Version(BaseVersion):
         """
         return self.pre is not None and self.pre[0] == RC_SEGMENT
 
+    @property
+    def is_release(self) -> bool:
+        """
+        Return True if the `Version` is a final release.
+        """
+        return self.public == self.base_version
+
 
 def _next_prerelease_version(
     version: Version, version_bump: Text, segment: Text
