@@ -320,6 +320,8 @@ test_versions_is_alpha = [
     ("1.2.1a1", True),
     ("1.2.1b1", False),
     ("1.2.1rc1", False),
+    ("1.2.1a1.dev1", True),
+    ("1.2.1.dev1", False),
 ]
 
 
@@ -336,6 +338,8 @@ test_versions_is_beta = [
     ("1.2.1a1", False),
     ("1.2.1b1", True),
     ("1.2.1rc1", False),
+    ("1.2.1b1.dev1", True),
+    ("1.2.1.dev1", False),
 ]
 
 
@@ -352,6 +356,8 @@ test_versions_is_release_candidate = [
     ("1.2.1a1", False),
     ("1.2.1b1", False),
     ("1.2.1rc1", True),
+    ("1.2.1rc1.dev1", True),
+    ("1.2.1.dev1", False),
 ]
 
 
