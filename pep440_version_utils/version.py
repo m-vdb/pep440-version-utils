@@ -91,6 +91,14 @@ class Version(BaseVersion):
         _reset_sort_key(version)
         return version
 
+    def next_devrelease(self, version_bump=VERSION_MICRO) -> "Version":
+        """
+        Return a new `Version` with the next developmental version.
+        Dev is a segment in a release, prerelease of postrelease
+        defined in PEP440.
+        """
+        return _next_devrelease_version(self, version_bump)
+
     def next_alpha(self, version_bump=VERSION_MICRO) -> "Version":
         """
         Return a new `Version` with the next alpha version.
@@ -141,16 +149,57 @@ class Version(BaseVersion):
         return self.public == self.base_version
 
 
+def _next_devrelease_version(version: Version, version_bump: Text) -> Version:
+    """
+    Return a new `Version` with the next developmental release (.dev)
+    Dev releases can be within final, pre- or post-release release phases.
+    It can bump either the major, minor or micro part of the release if there
+    the current version has no pre-release, post-release or developmental markers.
+    """
+    version = copy(version)
+    if version.is_release:
+        if version_bump == VERSION_MAJOR:
+            version = version.next_major()
+        elif version_bump == VERSION_MINOR:
+            version = version.next_minor()
+        elif version_bump == VERSION_MICRO:
+            version = version.next_micro()
+        else:
+            # Why not enum?
+            raise TypeError(f"Unknown version bump: {version_bump}")
+
+    prerelease_pair = None
+    if version.is_prerelease:
+        if version.is_devrelease:
+            prerelease_pair = version.pre
+        else:
+            segment = version.pre[0]  # increment the current pre-release phase
+            prerelease_pair = _increment_prerelease(version.pre, segment)
+    devrelease_pair = _increment_devrelease(version.dev)
+
+    version._version = VersionNamedTuple(
+        epoch=version._version.epoch,
+        release=version.release,
+        pre=prerelease_pair,
+        post=None,
+        dev=devrelease_pair,
+        local=None,
+    )
+    _reset_sort_key(version)
+    return version
+
+
 def _next_prerelease_version(
     version: Version, version_bump: Text, segment: Text
 ) -> Version:
     """
     Return a new `Version` with the next prerelease (one of alpha, beta, rc).
-    It can bump either the major, minor or micro part of the release, if this
-    is the first prerelease (prerelease is absent from the current version).
+    It can bump either the major, minor or micro part of the release, if
+    neither a developmental release or a prerelease is being incremented (the
+    current version has no dev or prerelease markers).
     """
     version = copy(version)
-    if not version.pre:
+    if version.is_release:
         if version_bump == VERSION_MAJOR:
             version = version.next_major()
         elif version_bump == VERSION_MINOR:
