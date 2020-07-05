@@ -22,7 +22,7 @@ def test_copy(version_string):
     assert version1._key is not version2._key
 
 
-test_versions_for_major = [
+test_versions_for_next_major = [
     ("0.0.1", "1.0.0"),
     ("0.1.1", "1.0.0"),
     ("1.1.1", "2.0.0"),
@@ -32,10 +32,21 @@ test_versions_for_major = [
     ("2.0.0rc2", "2.0.0"),
     ("2.0.0b4", "2.0.0"),
     ("2.0.0b4.post1", "2.0.0"),
+    ("1.1.1.dev1", "2.0.0"),
+    ("1.1.0.dev2", "2.0.0"),
+    ("2.0.0.dev10", "2.0.0"),
+    ("1.1.1a1.dev1", "2.0.0"),
+    ("1.1.0b10.dev1", "2.0.0"),
+    ("2.0.0a1.dev1", "2.0.0"),
+    ("2.0.0rc2.dev1", "2.0.0"),
+    ("2.0.0b4.dev1", "2.0.0"),
+    ("2.0.0b4.post1.dev1", "2.0.0"),
 ]
 
 
-@pytest.mark.parametrize("version_string,expected", test_versions_for_major)
+@pytest.mark.parametrize(
+    "version_string,expected", test_versions_for_next_major
+)
 def test_next_major(version_string, expected):
     version = Version(version_string)
     next_version = version.next_major()
