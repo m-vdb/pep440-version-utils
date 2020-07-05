@@ -4,8 +4,13 @@ import pytest
 
 from pep440_version_utils import Version
 
+test_versions_for_copy = [
+    "1.0.0",
+    "1.0.0.dev1",
+]
 
-def test_copy():
+@pytest.mark.parametrize("version_string", test_versions_for_copy)
+def test_copy(version_string):
     version1 = Version("1.0.0")
     version2 = copy(version1)
 
