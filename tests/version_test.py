@@ -86,7 +86,7 @@ def test_next_minor(version_string, expected):
     assert str(next_version) == expected
 
 
-test_versions_for_micro = [
+test_versions_for_next_micro = [
     ("0.0.1", "0.0.2"),
     ("0.1.1", "0.1.2"),
     ("1.1.1", "1.1.2"),
@@ -96,10 +96,21 @@ test_versions_for_micro = [
     ("1.2.0rc2", "1.2.1"),
     ("1.2.0b4", "1.2.1"),
     ("1.2.0b4.post1", "1.2.1"),
+    ("1.2.1.dev1", "1.2.1"),
+    ("1.2.2.dev2", "1.2.2"),
+    ("1.2.0.dev10", "1.2.1"),
+    ("1.2.1a1.dev1", "1.2.1"),
+    ("1.2.2a1.dev1", "1.2.2"),
+    ("1.2.0a1.dev1", "1.2.1"),
+    ("1.2.0rc2.dev1", "1.2.1"),
+    ("1.2.0b4.dev1", "1.2.1"),
+    ("1.2.0b4.post1.dev1", "1.2.1"),
 ]
 
 
-@pytest.mark.parametrize("version_string,expected", test_versions_for_micro)
+@pytest.mark.parametrize(
+    "version_string,expected", test_versions_for_next_micro
+)
 def test_next_micro(version_string, expected):
     version = Version(version_string)
     next_version = version.next_micro()
