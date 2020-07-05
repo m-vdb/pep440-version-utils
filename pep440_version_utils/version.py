@@ -171,10 +171,22 @@ def _increment_prerelease(
     """
     Increment a prerelease tuple.
     """
-    if not prerelease:
+    return _increment_marked_release(prerelease, segment)
+
+
+def _increment_marked_release(
+    type_number_pair: Optional[Tuple[Text, int]], segment: Text
+) -> Tuple[Text, int]:
+    """
+    Increment a marked part of release (pre, dev or post).
+
+    The tuple is a pair of the phase/type and the release number.
+    This is a generalised form of the `BaseVersion.pre` value.
+    """
+    if not type_number_pair:
         return (segment, 1)
 
-    current_segment, number = prerelease
+    current_segment, number = type_number_pair
     if current_segment == segment:
         return (current_segment, number + 1)
 
