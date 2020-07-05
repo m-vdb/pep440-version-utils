@@ -11,6 +11,7 @@ from packaging.version import (
 ALPHA_SEGMENT = "a"
 BETA_SEGMENT = "b"
 RC_SEGMENT = "rc"
+DEV_SEGMENT = "dev"
 
 VERSION_MICRO = "micro"
 VERSION_MINOR = "minor"
@@ -163,6 +164,16 @@ def _next_prerelease_version(
     )
     _reset_sort_key(version)
     return version
+
+
+def _increment_devrelease(devrelease: Optional[int]) -> Tuple[Text, int]:
+    """
+    Increment a developmental release.
+    """
+    current_tuple = None
+    if devrelease:
+        current_tuple = (DEV_SEGMENT, devrelease)
+    return _increment_marked_release(current_tuple, DEV_SEGMENT)
 
 
 def _increment_prerelease(
