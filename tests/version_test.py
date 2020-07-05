@@ -249,7 +249,7 @@ def test_next_release_candidate(version_string, version_bump, expected):
     assert str(next_version) == expected
 
 
-test_versions_for_next_devrelease = [
+test_versions_for_next_dev = [
     ("0.0.1", "micro", "0.0.2.dev1"),
     ("0.0.1", "minor", "0.1.0.dev1"),
     ("0.0.1", "major", "1.0.0.dev1"),
@@ -284,11 +284,11 @@ test_versions_for_next_devrelease = [
 
 
 @pytest.mark.parametrize(
-    "version_string,version_bump,expected", test_versions_for_next_devrelease,
+    "version_string,version_bump,expected", test_versions_for_next_dev,
 )
-def test_next_devrelease(version_string, version_bump, expected):
+def test_next_dev(version_string, version_bump, expected):
     version = Version(version_string)
-    next_version = version.next_devrelease(version_bump)
+    next_version = version.next_dev(version_bump)
     assert isinstance(next_version, Version)
     assert next_version > version
     assert str(next_version) == expected

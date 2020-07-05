@@ -91,7 +91,7 @@ class Version(BaseVersion):
         _reset_sort_key(version)
         return version
 
-    def next_devrelease(self, version_bump=VERSION_MICRO) -> "Version":
+    def next_dev(self, version_bump=VERSION_MICRO) -> "Version":
         """
         Return a new `Version` with the next developmental version.
         Dev is a segment in a release, prerelease of postrelease
@@ -149,6 +149,28 @@ class Version(BaseVersion):
         return self.public == self.base_version
 
 
+def _build_suffixed_version(
+    version: Version,
+    prerelease: Optional[Tuple[Text, int]],
+    devrelease: Optional[Tuple[Text, int]],
+) -> Version:
+    """
+    Return a new `Version` including the provided prerelease and optional devrelease.
+    """
+    version = copy(version)
+
+    version._version = VersionNamedTuple(
+        epoch=version._version.epoch,
+        release=version.release,
+        pre=prerelease,
+        post=None,
+        dev=devrelease,
+        local=None,
+    )
+    _reset_sort_key(version)
+    return version
+
+
 def _next_devrelease_version(version: Version, version_bump: Text) -> Version:
     """
     Return a new `Version` with the next developmental release (.dev)
@@ -157,36 +179,21 @@ def _next_devrelease_version(version: Version, version_bump: Text) -> Version:
     the current version has no pre-release, post-release or developmental markers.
     """
     version = copy(version)
+
     if version.is_release:
-        if version_bump == VERSION_MAJOR:
-            version = version.next_major()
-        elif version_bump == VERSION_MINOR:
-            version = version.next_minor()
-        elif version_bump == VERSION_MICRO:
-            version = version.next_micro()
-        else:
-            # Why not enum?
-            raise TypeError(f"Unknown version bump: {version_bump}")
+        version = _next_release_version(version, version_bump)
 
-    prerelease_pair = None
-    if version.is_prerelease:
+    prerelease = None
+    if version.pre is not None:
         if version.is_devrelease:
-            prerelease_pair = version.pre
+            prerelease = version.pre
         else:
-            segment = version.pre[0]  # increment the current pre-release phase
-            prerelease_pair = _increment_prerelease(version.pre, segment)
-    devrelease_pair = _increment_devrelease(version.dev)
+            prerelease_phase = version.pre[0]  # increment the current pre-release phase
+            prerelease = _increment_prerelease(version.pre, prerelease_phase)
+    devrelease_id = version.dev  # NOTE: Incorrect type annotation in BaseVersion
+    devrelease = _increment_devrelease(devrelease_id)  # type: ignore
 
-    version._version = VersionNamedTuple(
-        epoch=version._version.epoch,
-        release=version.release,
-        pre=prerelease_pair,
-        post=None,
-        dev=devrelease_pair,
-        local=None,
-    )
-    _reset_sort_key(version)
-    return version
+    return _build_suffixed_version(version, prerelease, devrelease)
 
 
 def _next_prerelease_version(
@@ -199,37 +206,42 @@ def _next_prerelease_version(
     current version has no dev or prerelease markers).
     """
     version = copy(version)
-    if version.is_release:
-        if version_bump == VERSION_MAJOR:
-            version = version.next_major()
-        elif version_bump == VERSION_MINOR:
-            version = version.next_minor()
-        elif version_bump == VERSION_MICRO:
-            version = version.next_micro()
-        else:
-            # would use typing.Literal but only available in Python 3.8
-            raise TypeError(f"Unknown version bump: {version_bump}")
 
-    version._version = VersionNamedTuple(
-        epoch=version._version.epoch,
-        release=version.release,
-        pre=_increment_prerelease(version.pre, segment),
-        post=None,
-        dev=None,
-        local=None,
-    )
-    _reset_sort_key(version)
+    if version.is_release:
+        version = _next_release_version(version, version_bump)
+
+    prerelease = _increment_prerelease(version.pre, segment)
+    devrelease = None
+    return _build_suffixed_version(version, prerelease, devrelease)
+
+
+def _next_release_version(version: Version, version_bump: Text) -> Version:
+    """
+    Return a new `Version` with the release segment incremented if valid.
+    The major, minor or micro part of the release segment will be incremented as
+    specified by `version_bump`, and only if the current version is a final release (not
+    a developmental, pre or post release).
+    """
+    if version_bump == VERSION_MAJOR:
+        version = version.next_major()
+    elif version_bump == VERSION_MINOR:
+        version = version.next_minor()
+    elif version_bump == VERSION_MICRO:
+        version = version.next_micro()
+    else:
+        # would use typing.Literal but only available in Python 3.8
+        raise TypeError(f"Unknown version bump: {version_bump}")
     return version
 
 
-def _increment_devrelease(devrelease: Optional[int]) -> Tuple[Text, int]:
+def _increment_devrelease(devrelease_id: Optional[int]) -> Tuple[Text, int]:
     """
     Increment a developmental release.
     """
     current_tuple = None
-    if devrelease:
-        current_tuple = (DEV_SEGMENT, devrelease)
-    return _increment_marked_release(current_tuple, DEV_SEGMENT)
+    if devrelease_id:
+        current_tuple = (DEV_SEGMENT, devrelease_id)
+    return _increment_subrelease(current_tuple, DEV_SEGMENT)
 
 
 def _increment_prerelease(
@@ -238,14 +250,14 @@ def _increment_prerelease(
     """
     Increment a prerelease tuple.
     """
-    return _increment_marked_release(prerelease, segment)
+    return _increment_subrelease(prerelease, segment)
 
 
-def _increment_marked_release(
+def _increment_subrelease(
     type_number_pair: Optional[Tuple[Text, int]], segment: Text
 ) -> Tuple[Text, int]:
     """
-    Increment a marked part of release (pre, dev or post).
+    Increment a part of release (pre, dev or post segment).
 
     The tuple is a pair of the phase/type and the release number.
     This is a generalised form of the `BaseVersion.pre` value.
