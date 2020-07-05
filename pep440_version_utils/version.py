@@ -40,7 +40,7 @@ class Version(BaseVersion):
         """
         version = copy(self)
         major = version.major + 1
-        if version.pre and not version.minor and not version.micro:
+        if not version.is_release and not (version.minor or version.micro):
             major = version.major
         version._version = VersionNamedTuple(
             epoch=version._version.epoch,
@@ -59,7 +59,7 @@ class Version(BaseVersion):
         """
         version = copy(self)
         minor = version.minor + 1
-        if version.pre and not version.micro:
+        if not version.is_release and not version.micro:
             minor = version.minor
         version._version = VersionNamedTuple(
             epoch=version._version.epoch,
@@ -78,7 +78,7 @@ class Version(BaseVersion):
         """
         version = copy(self)
         micro = version.micro + 1
-        if version.pre and version.micro > 0:
+        if not version.is_release and version.micro > 0:
             micro = version.micro
         version._version = VersionNamedTuple(
             epoch=version._version.epoch,
