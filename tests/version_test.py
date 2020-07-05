@@ -55,7 +55,7 @@ def test_next_major(version_string, expected):
     assert str(next_version) == expected
 
 
-test_versions_for_minor = [
+test_versions_for_next_minor = [
     ("0.0.1", "0.1.0"),
     ("0.1.1", "0.2.0"),
     ("1.1.1", "1.2.0"),
@@ -64,10 +64,20 @@ test_versions_for_minor = [
     ("1.2.0rc2", "1.2.0"),
     ("1.2.0b4", "1.2.0"),
     ("1.2.0b4.post1", "1.2.0"),
+    ("1.1.1.dev1", "1.2.0"),
+    ("1.2.0.dev2", "1.2.0"),
+    ("1.2.0.dev10", "1.2.0"),
+    ("1.1.1a1.dev1", "1.2.0"),
+    ("1.2.0a1.dev1", "1.2.0"),
+    ("1.2.0rc2.dev1", "1.2.0"),
+    ("1.2.0b4.dev1", "1.2.0"),
+    ("1.2.0b4.post1.dev1", "1.2.0"),
 ]
 
 
-@pytest.mark.parametrize("version_string,expected", test_versions_for_minor)
+@pytest.mark.parametrize(
+    "version_string,expected", test_versions_for_next_minor
+)
 def test_next_minor(version_string, expected):
     version = Version(version_string)
     next_version = version.next_minor()
