@@ -47,7 +47,7 @@ version.next_beta()  # 1.10.3b1
 version.next_release_candidate()  # 1.10.3rc1
 
 version.next_alpha("minor")  # 1.11.0a1
-version.next_beta("mior")  # 1.11.0b1
+version.next_beta("minor")  # 1.11.0b1
 version.next_release_candidate("major")  # 2.0.0rc1
 ```
 

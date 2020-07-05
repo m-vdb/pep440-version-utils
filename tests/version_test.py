@@ -9,6 +9,7 @@ test_versions_for_copy = [
     "1.0.0.dev1",
 ]
 
+
 @pytest.mark.parametrize("version_string", test_versions_for_copy)
 def test_copy(version_string):
     version1 = Version("1.0.0")
@@ -44,9 +45,7 @@ test_versions_for_next_major = [
 ]
 
 
-@pytest.mark.parametrize(
-    "version_string,expected", test_versions_for_next_major
-)
+@pytest.mark.parametrize("version_string,expected", test_versions_for_next_major)
 def test_next_major(version_string, expected):
     version = Version(version_string)
     next_version = version.next_major()
@@ -75,9 +74,7 @@ test_versions_for_next_minor = [
 ]
 
 
-@pytest.mark.parametrize(
-    "version_string,expected", test_versions_for_next_minor
-)
+@pytest.mark.parametrize("version_string,expected", test_versions_for_next_minor)
 def test_next_minor(version_string, expected):
     version = Version(version_string)
     next_version = version.next_minor()
@@ -108,9 +105,7 @@ test_versions_for_next_micro = [
 ]
 
 
-@pytest.mark.parametrize(
-    "version_string,expected", test_versions_for_next_micro
-)
+@pytest.mark.parametrize("version_string,expected", test_versions_for_next_micro)
 def test_next_micro(version_string, expected):
     version = Version(version_string)
     next_version = version.next_micro()
@@ -244,19 +239,15 @@ test_versions_for_next_release_candidate = [
 
 
 @pytest.mark.parametrize(
-    "version_string,version_bump,expected",
-    test_versions_for_next_release_candidate,
+    "version_string,version_bump,expected", test_versions_for_next_release_candidate,
 )
-def test_next_release_candidate(
-    version_string,
-    version_bump,
-    expected
-):
+def test_next_release_candidate(version_string, version_bump, expected):
     version = Version(version_string)
     next_version = version.next_release_candidate(version_bump)
     assert isinstance(next_version, Version)
     assert next_version > version
     assert str(next_version) == expected
+
 
 test_versions_for_next_dev = [
     ("0.0.1", "micro", "0.0.2.dev1"),
