@@ -203,7 +203,7 @@ def test_next_beta(version_string, version_bump, expected):
     assert str(next_version) == expected
 
 
-test_versions_for_next_rc = [
+test_versions_for_next_release_candidate = [
     ("0.0.1", "micro", "0.0.2rc1"),
     ("0.0.1", "minor", "0.1.0rc1"),
     ("0.0.1", "major", "1.0.0rc1"),
@@ -222,13 +222,36 @@ test_versions_for_next_rc = [
     ("1.2.1rc1", "micro", "1.2.1rc2"),
     ("1.2.1rc1", "minor", "1.2.1rc2"),
     ("1.2.1rc1", "major", "1.2.1rc2"),
+    ("0.0.1.dev1", "micro", "0.0.1rc1"),
+    ("0.0.1.dev1", "minor", "0.0.1rc1"),
+    ("0.0.1.dev1", "major", "0.0.1rc1"),
+    ("0.1.1.dev1", "micro", "0.1.1rc1"),
+    ("0.1.1.dev1", "minor", "0.1.1rc1"),
+    ("0.1.1.dev1", "major", "0.1.1rc1"),
+    ("1.1.1.dev1", "micro", "1.1.1rc1"),
+    ("1.1.1.dev1", "minor", "1.1.1rc1"),
+    ("1.1.1.dev1", "major", "1.1.1rc1"),
+    ("1.2.1a2.dev1", "micro", "1.2.1rc1"),
+    ("1.2.1a2.dev1", "minor", "1.2.1rc1"),
+    ("1.2.1a2.dev1", "major", "1.2.1rc1"),
+    ("1.2.1b2.dev1", "micro", "1.2.1rc1"),
+    ("1.2.1b2.dev1", "minor", "1.2.1rc1"),
+    ("1.2.1b2.dev1", "major", "1.2.1rc1"),
+    ("1.2.1rc2.dev1", "micro", "1.2.1rc2"),
+    ("1.2.1rc2.dev1", "minor", "1.2.1rc2"),
+    ("1.2.1rc2.dev1", "major", "1.2.1rc2"),
 ]
 
 
 @pytest.mark.parametrize(
-    "version_string,version_bump,expected", test_versions_for_next_rc,
+    "version_string,version_bump,expected",
+    test_versions_for_next_release_candidate,
 )
-def test_next_rc(version_string, version_bump, expected):
+def test_next_release_candidate(
+    version_string,
+    version_bump,
+    expected
+):
     version = Version(version_string)
     next_version = version.next_release_candidate(version_bump)
     assert isinstance(next_version, Version)
