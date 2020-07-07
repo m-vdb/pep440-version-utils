@@ -210,8 +210,13 @@ def _next_prerelease_version(
     if version.is_release:
         version = _next_release_version(version, version_bump)
 
-    prerelease = _increment_prerelease(version.pre, segment)
-    devrelease = None
+    devrelease = None # The next prerelease version will never be a devrelease
+    if version.is_devrelease and (version.pre and version.pre[0] == segment):
+        # If it's a dev release of the next prerelease, we don't increment
+        prerelease = version.pre
+    else:
+        prerelease = _increment_prerelease(version.pre, segment)
+
     return _build_suffixed_version(version, prerelease, devrelease)
 
 
