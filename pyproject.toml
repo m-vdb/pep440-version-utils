@@ -12,7 +12,7 @@ keywords = ["pep440", "version"]
 classifiers = ["Development Status :: 4 - Beta", "Intended Audience :: Developers", "License :: OSI Approved :: MIT License"]
 
 [tool.poetry.dependencies]
-python = ">=3.7,<=3.10"
+python = ">=3.7,<3.11"
 packaging = "^20.3"
 
 [tool.poetry.dev-dependencies]
