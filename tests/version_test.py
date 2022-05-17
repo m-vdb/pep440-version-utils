@@ -99,7 +99,8 @@ test_versions_for_next_alpha = [
 
 
 @pytest.mark.parametrize(
-    "version_string,version_bump,expected", test_versions_for_next_alpha,
+    "version_string,version_bump,expected",
+    test_versions_for_next_alpha,
 )
 def test_next_alpha(version_string, version_bump, expected):
     version = Version(version_string)
@@ -129,7 +130,8 @@ test_versions_for_next_beta = [
 
 
 @pytest.mark.parametrize(
-    "version_string,version_bump,expected", test_versions_for_next_beta,
+    "version_string,version_bump,expected",
+    test_versions_for_next_beta,
 )
 def test_next_beta(version_string, version_bump, expected):
     version = Version(version_string)
@@ -162,7 +164,8 @@ test_versions_for_next_rc = [
 
 
 @pytest.mark.parametrize(
-    "version_string,version_bump,expected", test_versions_for_next_rc,
+    "version_string,version_bump,expected",
+    test_versions_for_next_rc,
 )
 def test_next_rc(version_string, version_bump, expected):
     version = Version(version_string)
@@ -193,7 +196,8 @@ test_versions_is_alpha = [
 
 
 @pytest.mark.parametrize(
-    "version_string,expected", test_versions_is_alpha,
+    "version_string,expected",
+    test_versions_is_alpha,
 )
 def test_is_alpha(version_string, expected):
     version = Version(version_string)
@@ -209,7 +213,8 @@ test_versions_is_beta = [
 
 
 @pytest.mark.parametrize(
-    "version_string,expected", test_versions_is_beta,
+    "version_string,expected",
+    test_versions_is_beta,
 )
 def test_is_beta(version_string, expected):
     version = Version(version_string)
@@ -225,7 +230,8 @@ test_versions_is_release_candidate = [
 
 
 @pytest.mark.parametrize(
-    "version_string,expected", test_versions_is_release_candidate,
+    "version_string,expected",
+    test_versions_is_release_candidate,
 )
 def test_is_release_candidate(version_string, expected):
     version = Version(version_string)
