@@ -36,7 +36,7 @@ version.next_minor()  # 1.11.0
 version.next_major()  # 2.0.0
 ```
 
-To bump to a new prerelease version:
+To bump to a new developmental or prerelease version:
 
 ```python
 from pep440_version_utils import Version
@@ -45,10 +45,12 @@ version = Version("1.10.2")
 version.next_alpha()  # 1.10.3a1
 version.next_beta()  # 1.10.3b1
 version.next_release_candidate()  # 1.10.3rc1
+version.next_dev()  # 1.10.3.dev1
 
 version.next_alpha("minor")  # 1.11.0a1
-version.next_beta("mior")  # 1.11.0b1
+version.next_beta("minor")  # 1.11.0b1
 version.next_release_candidate("major")  # 2.0.0rc1
+version.next_dev("major")  # 2.0.0.dev1
 ```
 
 And it implements the full release cycle:
@@ -65,7 +67,24 @@ rc2 = rc1.next_release_candidate()  # 1.10.3rc2
 new_version = rc2.next_micro()  # 1.10.3
 ```
 
+Complete with support for developmental versions, including within
+prerelease phases:
+
+```python
+from pep440_version_utils import Version
+
+version = Version("1.10.2")
+dev1 = version.next_dev()  # 1.10.3.dev1
+alpha1 = dev1.next_alpha()  # 1.10.3a1
+beta1 = alpha1.next_beta()  # 1.10.3b1
+rc1 = beta1.next_release_candidate()  # 1.10.3rc1
+rc2_dev1 = rc1.next_dev() # 1.10.3rc2.dev1
+rc2 = rc2_dev1.next_release_candidate()  # 1.10.3rc2
+new_version = rc2.next_micro()  # 1.10.3
+```
+
 You can also check if a version is a specific type of prerelease:
+
 ```python
 from pep440_version_utils import Version
 
@@ -76,7 +95,7 @@ Version("1.10.2rc1").is_release_candidate  # True
 
 ## Limitations
 
-This package doesn't support _post_, _dev_ and _local_ versions yet. **Contributions are welcome 😊**
+This package doesn't support _post_, versions yet and has limited support for _local_ versions. **Contributions are welcome 😊**
 
 ## How to contribute
 
