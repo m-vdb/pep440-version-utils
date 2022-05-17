@@ -1,5 +1,5 @@
 ![Continuous Integration](https://github.com/m-vdb/pep440-version-utils/workflows/Continuous%20Integration/badge.svg)
-[![Coverage Status](https://coveralls.io/repos/github/m-vdb/pep440-version-utils/badge.svg?branch=master)](https://coveralls.io/github/m-vdb/pep440-version-utils?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/m-vdb/pep440-version-utils/badge.svg?branch=main)](https://coveralls.io/github/m-vdb/pep440-version-utils?branch=main)
 
 # pep440-version-utils
 This package regroups utilities to deal with pep440 versioning. It is based on the
@@ -7,7 +7,7 @@ This package regroups utilities to deal with pep440 versioning. It is based on t
 
 It makes it easier to handle version bumps and strictly follows [PEP440 specification](https://www.python.org/dev/peps/pep-0440/).
 
-![Release cycle](https://github.com/m-vdb/pep440-version-utils/blob/master/docs/release-cycle.png?raw=true)
+![Release cycle](https://github.com/m-vdb/pep440-version-utils/blob/main/docs/release-cycle.png?raw=true)
 
 ## Installation
 
