@@ -1,0 +1,14 @@
+All notable changes to this project will be documented in this file.
+This project adheres to [Semantic Versioning](https://semver.org/) and [PEP440](https://peps.python.org/pep-0440/)
+starting with version 0.1.
+
+## [1.0.0] - 2023-11-29
+
+### Improvements
+
+- Add support for Python 3.10
+- Bump `packaging` to `^23.2`` while loosening version constraint.
+
+### Removal & Deprecations
+
+- Remove support for Python 3.6 and Python 3.7. Both versions reached end of life.
