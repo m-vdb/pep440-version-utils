@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pep440-version-utils"
-version = "0.3.0"
+version = "1.0.0"
 description = "Utilities to deal with pep440 versioning"
 authors = ["Maxime Verger <me@maxvdb.com>"]
 license = "MIT"
