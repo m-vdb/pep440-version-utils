@@ -94,3 +94,10 @@ $ poetry run pytest --cov=pep440_version_utils
 5. ➡️ Submit a new pull request
 
 Do not hesitate to contribue, even for very small changes!
+
+## How to release new versions
+
+1. Update CHANGELOG
+2. Update project version in `pyproject.toml`
+3. `poetry build`
+4. `poetry publish`
