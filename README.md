@@ -76,7 +76,7 @@ Version("1.10.2rc1").is_release_candidate  # True
 
 ## Limitations
 
-This package doesn't support _post_, _dev_ and _local_ versions yet. **Contributions are welcome 😊**
+This package doesn't support _post_ and _local_ versions yet. **Contributions are welcome 😊**
 
 ## How to contribute
 
