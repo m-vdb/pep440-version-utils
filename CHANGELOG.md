@@ -2,6 +2,12 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/) and [PEP440](https://peps.python.org/pep-0440/)
 starting with version 0.1.
 
+## [1.1.1] - 2024-08-29
+
+### Maintenance
+
+- Bump dependency constraint on `packaging`.
+
 ## [1.1.0] - 2024-06-14
 
 ### Improvements
