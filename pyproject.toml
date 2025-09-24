@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pep440-version-utils"
-version = "1.1.1"
+version = "1.2.0"
 description = "Utilities to deal with pep440 versioning"
 authors = ["Maxime Verger <me@maxvdb.com>"]
 license = "MIT"
@@ -12,7 +12,7 @@ keywords = ["pep440", "version"]
 classifiers = ["Development Status :: 4 - Beta", "Intended Audience :: Developers", "License :: OSI Approved :: MIT License"]
 
 [tool.poetry.dependencies]
-python = ">=3.8,<3.13"
+python = ">=3.8,<3.14"
 packaging = ">=21.3,<25"
 
 [tool.poetry.dev-dependencies]
