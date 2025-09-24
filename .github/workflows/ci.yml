@@ -79,6 +79,7 @@ jobs:
       run: poetry run pytest --cov=pep440_version_utils
 
     - name: Coveralls
+      if: matrix.python-version == '3.12'
       env:
         COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
       run: poetry run coveralls
